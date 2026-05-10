@@ -1,0 +1,35 @@
+---
+- name: Configure Web Server and Deploy Application
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Nginx Web Server
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: Start and Enable Nginx Service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Deploy Custom HTML Landing Page
+      copy:
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>InfraPro Live</title>
+              <style>
+                  body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 50px; }
+                  h1 { color: #2980b9; }
+              </style>
+          </head>
+          <body>
+              <h1>Welcome to InfraPro Cloud Automation!</h1>
+              <p>Successfully provisioned via Terraform & Configured via Ansible.</p>
+          </body>
+          </html>
+        dest: /var/www/html/index.html
